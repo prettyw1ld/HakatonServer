@@ -1,4 +1,4 @@
-﻿using HakatonServer.Dtos.News;
+﻿using HakatonServer.Dtos;
 using HakatonServer.Models;
 
 namespace HakatonServer.Hubs.Interfaces

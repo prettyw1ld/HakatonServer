@@ -1,8 +1,9 @@
 ﻿using HakatonServer.Data;
-using HakatonServer.Dtos.News;
+using HakatonServer.Dtos;
 using HakatonServer.Hubs;
 using HakatonServer.Hubs.Interfaces;
 using HakatonServer.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
@@ -17,8 +18,7 @@ namespace HakatonServer.Controllers
         private readonly AppDbContext _db = db;
         private readonly IHubContext<NewsHub, INewsHub> _hub = hub;
 
-
-        [HttpGet]
+        [HttpGet, Authorize]
         public async Task<ActionResult<News>> GetNewsAsync()
         {
             try
@@ -66,7 +66,6 @@ namespace HakatonServer.Controllers
 
                 _db.News.Add(news);
                 await _db.SaveChangesAsync();
-
                 
                 var response = new NewsDto(news.Id, news.Title, news.Description, news.CreatedAt);
                 await _hub.Clients.All.UpdateNews(response);
